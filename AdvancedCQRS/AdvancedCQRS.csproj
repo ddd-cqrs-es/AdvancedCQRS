@@ -46,10 +46,11 @@
   <ItemGroup>
     <Compile Include="FakePublisher.cs" />
     <Compile Include="IPublishMessages.cs" />
-    <Compile Include="StopLossProcessManager.cs" />
-    <Compile Include="StopLossProcessManagerTests.cs" />
+    <Compile Include="StopLoss\StopLossProcessManager.cs" />
+    <Compile Include="StopLoss\StopLossProcessManagerTests.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StopLoss\Messages.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
