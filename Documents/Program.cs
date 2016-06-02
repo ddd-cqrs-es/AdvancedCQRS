@@ -63,7 +63,7 @@ namespace Documents
                 return cook;
             });
 
-            var multiCook = new RoundRobinDispatcher(cooks);
+            var multiCook = new MoreFairDispatcher(cooks);
 
             var waiter = new Waiter(multiCook);
             return waiter;

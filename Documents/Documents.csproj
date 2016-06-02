@@ -60,6 +60,7 @@
     <Compile Include="Cook.cs" />
     <Compile Include="IHandleOrder.cs" />
     <Compile Include="IStartable.cs" />
+    <Compile Include="MoreFairDispatcher.cs" />
     <Compile Include="Multiplexer.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
