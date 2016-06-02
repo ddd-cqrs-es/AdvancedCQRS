@@ -16,7 +16,7 @@ namespace Documents
 
             Console.WriteLine("Processing Payment...");
 
-            order.Paid = true;
+            order.SetPaid(true);
             _next.Handle(order);
         }
     }

@@ -62,7 +62,7 @@
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestFixture.cs" />
+    <Compile Include="OrderTests.cs" />
     <Compile Include="Waiter.cs" />
   </ItemGroup>
   <ItemGroup>
