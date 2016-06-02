@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Documents
 {
@@ -9,13 +11,13 @@ namespace Documents
             var cashier = new Cashier(new Reporter());
             var assMan = new AssistantManager(cashier);
 
-            var cook1 = new Cook(assMan);
-            var cook2 = new Cook(assMan);
-            var multiCook = new Multiplexer(new []{cook1, cook2});
+            var cooks = Enumerable.Range(1, 3).Select(i => new Cook(assMan));
+
+            var multiCook = new RoundRobinDispatcher(cooks);
 
             var waiter = new Waiter(multiCook);
 
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 waiter.PlaceOrder("poo");
             }
@@ -24,7 +26,6 @@ namespace Documents
 
         }
     }
-
 
     public class Reporter : IHandleOrder
     {

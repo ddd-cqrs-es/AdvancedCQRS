@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Documents
@@ -7,7 +8,7 @@ namespace Documents
     {
         private readonly List<IHandleOrder> _handlers;
 
-        public Multiplexer(IEnumerable<IHandleOrder> handlers )
+        public Multiplexer(IEnumerable<IHandleOrder> handlers)
         {
             _handlers = handlers.ToList();
         }
