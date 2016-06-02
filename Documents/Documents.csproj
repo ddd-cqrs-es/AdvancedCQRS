@@ -55,10 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssistantManager.cs" />
-    <Compile Include="Cashier.cs" />
-    <Compile Include="Cook.cs" />
-    <Compile Include="IHandleOrder.cs" />
+    <Compile Include="Actors\AssistantManager.cs" />
+    <Compile Include="Actors\Cashier.cs" />
+    <Compile Include="Actors\Cook.cs" />
+    <Compile Include="Handles.cs" />
     <Compile Include="IStartable.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="MoreFairDispatcher.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="RoundRobinDispatcher.cs" />
     <Compile Include="ThreadedHandler.cs" />
     <Compile Include="TopicBasedPubSub.cs" />
-    <Compile Include="Waiter.cs" />
+    <Compile Include="Actors\Waiter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

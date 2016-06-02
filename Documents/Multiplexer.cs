@@ -5,11 +5,11 @@ using System.Linq;
 
 namespace Documents
 {
-    class Multiplexer<T> : IHandle<T> where T : IMessage
+    class Multiplexer<T> : Handles<T> where T : IMessage
     {
-        private readonly List<IHandle<T>> _handlers;
+        private readonly List<Handles<T>> _handlers;
 
-        public Multiplexer(IEnumerable<IHandle<T>> handlers)
+        public Multiplexer(IEnumerable<Handles<T>> handlers)
         {
             _handlers = handlers.ToList();
         }

@@ -71,14 +71,14 @@ namespace Documents
                 return cook;
             });
 
-            var multiCook = new MoreFairDispatcher<OrderPlaced>(cooks);
-            bus.SubscribeByType(multiCook);
+            var dispatcher = new MoreFairDispatcher<OrderPlaced>(cooks);
+            bus.SubscribeByType(dispatcher);
             var waiter = new Waiter(bus);
             return waiter;
         }
     }
 
-    public class Reporter : IHandle<OrderPaid>
+    public class Reporter : Handles<OrderPaid>
     {
         public void Handle(OrderPaid message)
         {

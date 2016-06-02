@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Documents
 {
@@ -13,16 +9,15 @@ namespace Documents
     }
     class TopicBasedPubSub : IPublisher
     {
-        private readonly Dictionary<string, IHandle> _subscriptions = new Dictionary<string, IHandle>();
+        private readonly Dictionary<string, Handles> _subscriptions = new Dictionary<string, Handles>();
 
         public void Publish<T>(T message) where T : IMessage
         {
             var topic = typeof(T).Name.ToLower();
-            ((IHandle<T>)_subscriptions[topic]).Handle(message);
+            ((Handles<T>)_subscriptions[topic]).Handle(message);
         }
-        
 
-        public void SubscribeByType<T>(IHandle<T> subscriber) where T : IMessage
+        public void SubscribeByType<T>(Handles<T> subscriber) where T : IMessage
         {
             var topic = typeof(T).Name.ToLower();
             _subscriptions.Add(topic, subscriber);

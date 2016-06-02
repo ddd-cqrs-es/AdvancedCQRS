@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace Documents
 {
-    class MoreFairDispatcher<T> : IHandle<T> where T : IMessage
+    class MoreFairDispatcher<T> : Handles<T> where T : IMessage
     {
         private readonly List<ThreadedHandler<T>> _handlers;
 

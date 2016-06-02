@@ -2,13 +2,13 @@
 
 namespace Documents
 {
-    class RoundRobinDispatcher<T> : IHandle<T> where T : IMessage
+    class RoundRobinDispatcher<T> : Handles<T> where T : IMessage
     {
-        private readonly Queue<IHandle<T>> _handlers;
+        private readonly Queue<Handles<T>> _handlers;
 
-        public RoundRobinDispatcher(IEnumerable<IHandle<T>> handlers)
+        public RoundRobinDispatcher(IEnumerable<Handles<T>> handlers)
         {
-            _handlers = new Queue<IHandle<T>>(handlers);
+            _handlers = new Queue<Handles<T>>(handlers);
         }
 
         public void Handle(T order)

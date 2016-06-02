@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Documents
 {
-    public class AssistantManager : IHandle<FoodCooked> {
+    public class AssistantManager : Handles<FoodCooked> {
         private readonly IPublisher _bus;
 
         public AssistantManager(IPublisher bus)

@@ -7,7 +7,6 @@ using Newtonsoft.Json.Serialization;
 
 namespace Documents
 {
-
     public class Order 
     {
         protected readonly JObject Document;
@@ -177,7 +176,6 @@ namespace Documents
             };
 
             return JsonConvert.SerializeObject(this, settings);
-
         }
     }
 }

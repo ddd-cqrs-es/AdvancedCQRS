@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Documents
 {
-    public class Cook : IHandle<OrderPlaced>
+    public class Cook : Handles<OrderPlaced>
     {
         private readonly IPublisher _bus;
         private readonly string _name;

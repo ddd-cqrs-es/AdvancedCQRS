@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 namespace Documents
 {
-    class ThreadedHandler<T> : IHandle<T>, IStartable, IMonitorQueue where T: IMessage
+    class ThreadedHandler<T> : Handles<T>, IStartable, IMonitorQueue where T: IMessage
     {
-        private readonly IHandle<T> _handler;
+        private readonly Handles<T> _handler;
         private readonly string _name;
         readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
         private Task _task;
 
 
-        public ThreadedHandler(IHandle<T> handler, string name)
+        public ThreadedHandler(Handles<T> handler, string name)
         {
             _handler = handler;
             _name = name;

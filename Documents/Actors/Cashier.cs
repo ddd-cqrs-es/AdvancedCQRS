@@ -2,7 +2,7 @@ using System;
 
 namespace Documents
 {
-    public class Cashier : IHandle<OrderPriced>
+    public class Cashier : Handles<OrderPriced>
     {
         private readonly IPublisher _publisher;
 
