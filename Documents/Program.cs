@@ -54,6 +54,7 @@ namespace Documents
 
             var reporter = new Reporter();
             bus.SubscribeByType<OrderPaid>(reporter);
+            bus.SubscribeByType<OrderPlaced>(reporter);
             
 
             var cashier = new ThreadedHandler<OrderPriced>(new Cashier(bus), "Cashier");
@@ -79,11 +80,19 @@ namespace Documents
         }
     }
 
-    public class Reporter : Handles<OrderPaid>
+    public class Reporter : Handles<OrderPaid>, Handles<OrderPlaced>
     {
         public void Handle(OrderPaid message)
         {
             Console.WriteLine(message.Order);
+        }
+
+        public void Handle(OrderPlaced message)
+        {
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Reporter has observed the OrderPlaced event for order " + message.Order.Id);
+            Console.ResetColor();
+            
         }
     }
 }

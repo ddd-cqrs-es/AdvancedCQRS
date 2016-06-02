@@ -33,13 +33,17 @@ namespace Documents
         }
         private void Subscribe<T>(string topic, Handles<T> subscriber) where T : IMessage
         {
-            if (!_subscriptions.ContainsKey(topic))
+            lock (this)
             {
-                _subscriptions[topic] = new List<Handles>() ;
+                List<Handles> handlers;
+                if (!_subscriptions.TryGetValue(topic, out handlers))
+                {
+                    handlers = new List<Handles>();
+                }
+                var newList = new List<Handles>(handlers) {subscriber};
+
+                _subscriptions[topic] = newList;
             }
-            var newList = _subscriptions[topic].ToList();
-            newList.Add(subscriber);
-            _subscriptions[topic] = newList;
         }
         public void Unsubscribe<T>(Handles<T> subscriber) where T : IMessage
         {
@@ -49,13 +53,16 @@ namespace Documents
 
         private void Unsubscribe<T>(string topic, Handles<T> subscriber) where T : IMessage
         {
-            if (!_subscriptions.ContainsKey(topic)) 
-                return;
-
-            var newList = _subscriptions[topic].ToList();
-            newList.Remove(subscriber);
-
-            _subscriptions[topic] = newList;
+            lock (this)
+            {
+                List<Handles> handlers;
+                if (_subscriptions.TryGetValue(topic, out handlers))
+                {
+                    var newList = handlers.ToList();
+                    newList.Remove(subscriber);
+                    _subscriptions[topic] = newList;
+                }
+            }
         }
     }
 }
