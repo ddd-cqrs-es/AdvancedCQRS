@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework.Compatibility;
 
 namespace Documents
 {
@@ -18,15 +19,16 @@ namespace Documents
             {
                 waiter.PlaceOrder("poo");
             }
-
+            
             Console.ReadLine();
-
         }
 
         private static Waiter SetUp(List<IStartable> startables)
         {
-            var cashier = new Cashier(new Reporter());
-            var assMan = new AssistantManager(cashier);
+            var cashier = new ThreadedHandler(new Cashier(new Reporter()));
+            startables.Add(cashier);
+            var assMan = new ThreadedHandler(new AssistantManager(cashier));
+            startables.Add(assMan);
 
             var cooks = Enumerable.Range(1, 3).Select(i =>
             {
