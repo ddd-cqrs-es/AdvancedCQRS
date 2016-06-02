@@ -30,7 +30,7 @@ namespace Documents
     {
         public void Handle(Order order)
         {
-            Console.WriteLine(order.Id);
+            Console.WriteLine(order);
         }
     }
 }

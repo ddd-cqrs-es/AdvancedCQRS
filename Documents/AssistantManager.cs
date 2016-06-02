@@ -22,10 +22,10 @@ namespace Documents
             }
 
             //tax
-            order.Tax = 25.00m;
+            order.SetTax(25.00m);
 
             //total
-            order.Total = 50.00m;
+            order.SetTotal(50.00m);
 
             _next.Handle(order);
         }

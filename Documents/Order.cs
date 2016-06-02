@@ -5,126 +5,186 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Documents
 {
-    //public class Order2
-    //{
-    //    public Order2()
-    //    {
-    //        Id = Guid.NewGuid();
-    //        LineItems = new List<LineItem>();
-    //    }
-    //    public Guid Id { get; private set; }
-    //    public int TableName { get; set; }
-    //    public List<LineItem> LineItems { get; set; }
-    //    public string Ingredients
-    //    { get; set; }
 
-    //    public double Tax { get; set; }
-    //    public decimal Total { get; set; }
-    //    public bool Paid { get; set; }
-
-    //    public void AddLineItem(LineItem item)
-    //    {
-    //        LineItems.Add(item);
-    //    }
-    //}
-
-
-    public class Order
+    public class Order : ICloneable
     {
-        private readonly JObject _document;
+        protected readonly JObject Document;
 
         public Order(string s)
         {
-            _document = JObject.Parse(s);
+            Document = JObject.Parse(s);
         }
 
         public Order()
         {
-            _document = JObject.Parse("{\"id\" : \"" + Guid.NewGuid()+"\"}");
+            Document = JObject.Parse("{\"id\" : \"" + Guid.NewGuid()+"\"}");
+        }
+
+        protected Order(JObject o)
+        {
+            Document = o;
+        }
+
+        public override string ToString()
+        {
+            return Document.ToString();
+        }
+
+        private T ValueOrDefault<T>(string name)
+        {
+            var value = Document[name];
+            return value == null ? default(T) : value.Value<T>();
+        }
+
+        public object Clone()
+        {
+            return new Order((JObject)Document.DeepClone());
         }
 
         public string Id
         {
-            get { return _document["id"].Value<string>(); }
-        }
-
-
-        public override string ToString()
-        {
-            return _document.ToString();
+            get { return ValueOrDefault<string>("id"); }
         }
 
         public int TableNumber
         {
-            get { return _document["tableNumber"].Value<int>(); }
+            get { return ValueOrDefault<int>("tableNumber"); }
         }
 
         public string Ingredients
         {
-            get { return _document["ingredients"].Value<string>(); }
+            get { return ValueOrDefault<string>("ingredients"); } 
+        }
+
+        public Order SetIngredients(string value)
+        {
+            return SetOrAddProperty("ingredients", value);
         }
 
         public List<LineItem> LineItems
         {
             get
             {
-                var items = _document["lineItems"];
+                var items = Document["lineItems"];
 
+                if (items == null)
+                {
+                    return new List<LineItem>();
+                }
+                    
                 return items.Children<JObject>().Select(x => new LineItem
                 {
-                    Item = x["item"].Value<string>(),
+                    Id = x["id"]?.Value<string>(),
+                    Item = x["item"]?.Value<string>(),
                     Price = x["price"].Value<decimal>(),
                     Quantity = x["quantity"].Value<int>(),
                 }).ToList();
             }
         }
 
-        public decimal Tax { get; set; }
-        public decimal Total { get; set; }
-        public bool Paid { get; set; }
+        public decimal Tax
+        {
+            get { return ValueOrDefault<decimal>("tax"); }
 
+        }
+
+        public Order SetTax(decimal value)
+        {
+            return SetOrAddProperty("tax", value);
+        }
+
+        public decimal Total
+        {
+            get { return ValueOrDefault<decimal>("total"); }
+        }
+
+        public Order SetTotal(decimal value)
+        {
+            return SetOrAddProperty("total", value);
+        }
+
+        public bool Paid
+        {
+            get { return ValueOrDefault<bool>("paid"); }
+        }
+
+        public Order SetPaid(bool value)
+        {
+            return SetOrAddProperty("paid", value);
+        }
 
         public Order AddLineItem(LineItem item)
         {
-            var items = _document["lineItems"] as JArray;
+            var doc = (JObject)Document.DeepClone();
 
+            var items = doc["lineItems"] as JArray;
             items = items ?? new JArray();
 
-            var s = "{\"item\" : \"" +item.Item+ "\", \"quantity\" : " +item.Quantity.ToString() + ", \"price\" : " + item.Price+ "}";
-            items.Add(JObject.Parse(s));
+            items.Add(JObject.Parse(item.ToString()));
 
-            _document["lineItems"] = items;
-            return this;
+            doc["lineItems"] = items;
+
+            return new Order(doc);
         }
 
-        public Order SetIngredients(string ingredients)
+        protected Order SetOrAddProperty<T>(string name, T value)
         {
-            var prop = _document["ingredients"]  as JValue;
+            var doc = (JObject) Document.DeepClone();
+            var prop = doc[name]  as JValue;
 
-            if (prop == null)
+            prop = prop ?? new JValue(value);
+            prop.Value = value;
+
+            doc[name] = prop;
+
+            return new Order(doc);
+        }
+
+        public Order SetLinePrice(string id, decimal d)
+        {
+            var doc = (JObject)Document.DeepClone();
+            var items = Document["lineItems"];
+
+            if (items != null)
             {
-                prop = new JValue(ingredients);
-
-                _document.Add("ingredients", prop);
-
-                return this;
+                var item = items.Children<JObject>().FirstOrDefault(x => x["id"].Value<string>()==id);
+                if (item != null)
+                {
+                    item["price"] = d;
+                }
             }
 
-            prop.Value = ingredients;
+            doc["lineItems"] = items;
 
-            _document["ingredients"] = prop;
-
-            return this;
+            return new Order(doc);
         }
     }
 
     public class LineItem
     {
+        public LineItem()
+        {
+            Id = Guid.NewGuid().ToString("N");
+        }
+        public string Id { get; set; }
+
         public int Quantity { get; set; }
         public string Item { get; set; }
         public decimal Price { get; set; }
+
+        public override string ToString()
+        {
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            return JsonConvert.SerializeObject(this, settings);
+
+        }
     }
 }
