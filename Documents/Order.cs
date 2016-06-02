@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -10,7 +8,7 @@ using Newtonsoft.Json.Serialization;
 namespace Documents
 {
 
-    public class Order : ICloneable
+    public class Order 
     {
         protected readonly JObject Document;
 
@@ -38,11 +36,6 @@ namespace Documents
         {
             var value = Document[name];
             return value == null ? default(T) : value.Value<T>();
-        }
-
-        public object Clone()
-        {
-            return new Order((JObject)Document.DeepClone());
         }
 
         public string Id

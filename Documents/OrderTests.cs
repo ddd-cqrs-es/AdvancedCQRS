@@ -131,33 +131,6 @@ namespace Documents
 
         }
         [Test]
-        public void CanCloneWithExtraStuff()
-        {
-            var orderJson = @"
-
-    {
-        lineItems : [{ 
-            quantity : 2, 
-            price : 2.00, 
-            item : ""razor blade icecream""
-        }],
-        ingredients : ""pigs ears"",
-        foo : 'bar'
-    }
-
-";
-
-            var order = new Order(orderJson);
-
-            var newOrder = order.Clone();
-
-            Object.ReferenceEquals(order, newOrder).ShouldBe(false);
-            var actual = JObject.Parse(newOrder.ToString());
-            actual["foo"].Value<string>().ShouldBe("bar");
-
-        }
-
-        [Test]
         public void EnsureExtraProperptyRemainsIntact()
         {
             var orderJson = "{\"tableNumber\" : 23, \"Foo\" : \"Bar\"}";

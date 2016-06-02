@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Documents
 {
@@ -15,26 +16,15 @@ namespace Documents
 
             Console.WriteLine("Pricing...");
 
-            //price items
-            foreach (var item in order.LineItems)
-            {
-                item.Price = CalcPrice(item);
-            }
+            
+            order.LineItems.ForEach(item => order = order.SetLinePrice(item.Id, 5.10m));
+            var subTotal = order.LineItems.Sum(x => x.Price);
+            var tax = subTotal * 0.1m;
 
-            //tax
-            order.SetTax(25.00m);
-
-            //total
-            order.SetTotal(50.00m);
+            order = order.SetTax(tax)
+            .SetTotal(tax + subTotal);
 
             _next.Handle(order);
         }
-
-        private decimal CalcPrice(LineItem item)
-        {
-            return 10.00m;
-        }
-
-    
     }
 }
