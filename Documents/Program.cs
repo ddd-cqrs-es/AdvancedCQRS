@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Documents
 {
@@ -12,10 +8,14 @@ namespace Documents
         {
             var cashier = new Cashier(new Reporter());
             var assMan = new AssistantManager(cashier);
-            var cook = new Cook(assMan);
-            var waiter = new Waiter(cook);
 
-            for (int i = 0; i < 10; i++)
+            var cook1 = new Cook(assMan);
+            var cook2 = new Cook(assMan);
+            var multiCook = new Multiplexer(new []{cook1, cook2});
+
+            var waiter = new Waiter(multiCook);
+
+            for (int i = 0; i < 1; i++)
             {
                 waiter.PlaceOrder("poo");
             }
