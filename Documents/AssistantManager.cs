@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Documents
 {
-    public class AssistantManager : IHandleOrder {
+    public class AssistantManager : IHandle<FoodCooked> {
         private readonly IPublisher _bus;
 
         public AssistantManager(IPublisher bus)
@@ -11,9 +11,9 @@ namespace Documents
             _bus = bus;
         }
 
-        public void Handle(Order order)
+        public void Handle(FoodCooked message)
         {
-
+            var order = message.Order;
             Console.WriteLine("Pricing...");
             
             order.LineItems.ForEach(item => order = order.SetLinePrice(item.Id, 5.10m));
@@ -23,7 +23,7 @@ namespace Documents
             order = order.SetTax(tax)
             .SetTotal(tax + subTotal);
 
-            _bus.Publish("pay", order);
+            _bus.Publish(new OrderPriced {Order = order});
         }
     }
 }

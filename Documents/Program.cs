@@ -53,36 +53,36 @@ namespace Documents
             var bus = new TopicBasedPubSub();
 
             var reporter = new Reporter();
-            bus.Subscribe("done", reporter);
+            bus.SubscribeByType(reporter);
 
-            var cashier = new ThreadedHandler(new Cashier(bus), "Cashier");
+            var cashier = new ThreadedHandler<OrderPriced>(new Cashier(bus), "Cashier");
             startables.Add(cashier);
-            bus.Subscribe("pay", cashier);
-            var assMan = new ThreadedHandler(new AssistantManager(bus), "Assistant Manager");
+            bus.SubscribeByType(cashier);
+
+            var assMan = new ThreadedHandler<FoodCooked>(new AssistantManager(bus), "Assistant Manager");
             startables.Add(assMan);
-            bus.Subscribe("price", assMan);
+            bus.SubscribeByType(assMan);
 
             var rnd = new Random(1234);
             var cooks = Enumerable.Range(1, 3).Select(i =>
             {
-                var cook = new ThreadedHandler(new Cook(bus, $"cook-{i}", rnd.Next(0, 1000)), "Cook "+i);
+                var cook = new ThreadedHandler<OrderPlaced>(new Cook(bus, $"cook-{i}", rnd.Next(0, 1000)), "Cook "+i);
                 startables.Add(cook);
                 return cook;
             });
 
-            var multiCook = new MoreFairDispatcher(cooks);
-            bus.Subscribe("cook", multiCook);
-
+            var multiCook = new MoreFairDispatcher<OrderPlaced>(cooks);
+            bus.SubscribeByType(multiCook);
             var waiter = new Waiter(bus);
             return waiter;
         }
     }
 
-    public class Reporter : IHandleOrder
+    public class Reporter : IHandle<OrderPaid>
     {
-        public void Handle(Order order)
+        public void Handle(OrderPaid message)
         {
-            Console.WriteLine(order);
+            Console.WriteLine(message.Order);
         }
     }
 }

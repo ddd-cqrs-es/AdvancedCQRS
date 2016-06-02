@@ -4,21 +4,21 @@ using System.Threading.Tasks;
 
 namespace Documents
 {
-    class ThreadedHandler : IHandleOrder, IStartable, IMonitorQueue
+    class ThreadedHandler<T> : IHandle<T>, IStartable, IMonitorQueue where T: IMessage
     {
-        private readonly IHandleOrder _handler;
+        private readonly IHandle<T> _handler;
         private readonly string _name;
-        readonly ConcurrentQueue<Order> _queue = new ConcurrentQueue<Order>();
+        readonly ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
         private Task _task;
 
 
-        public ThreadedHandler(IHandleOrder handler, string name)
+        public ThreadedHandler(IHandle<T> handler, string name)
         {
             _handler = handler;
             _name = name;
         }
 
-        public void Handle(Order order)
+        public void Handle(T order)
         {
             _queue.Enqueue(order);
         }
@@ -48,7 +48,7 @@ namespace Documents
         {
             while (true)
             {
-                Order order;
+                T order;
                 if (_queue.TryDequeue(out order))
                 {
                     _handler.Handle(order);

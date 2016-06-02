@@ -20,7 +20,7 @@ namespace Documents
 
             Console.WriteLine("Placing order");
 
-            _bus.Publish("cook", order);
+            _bus.Publish(new OrderPlaced { Order = order});
 
             return order.Id;
         }

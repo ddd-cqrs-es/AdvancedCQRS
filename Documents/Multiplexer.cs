@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace Documents
 {
-    class Multiplexer : IHandleOrder
+    class Multiplexer<T> : IHandle<T> where T : IMessage
     {
-        private readonly List<IHandleOrder> _handlers;
+        private readonly List<IHandle<T>> _handlers;
 
-        public Multiplexer(IEnumerable<IHandleOrder> handlers)
+        public Multiplexer(IEnumerable<IHandle<T>> handlers)
         {
             _handlers = handlers.ToList();
         }
 
-        public void Handle(Order order)
+        public void Handle(T order)
         {
             _handlers.ForEach(x => x.Handle(order));
         }

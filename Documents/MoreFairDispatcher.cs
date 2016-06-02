@@ -4,16 +4,16 @@ using System.Threading;
 
 namespace Documents
 {
-    class MoreFairDispatcher : IHandleOrder
+    class MoreFairDispatcher<T> : IHandle<T> where T : IMessage
     {
-        private readonly List<ThreadedHandler> _handlers;
+        private readonly List<ThreadedHandler<T>> _handlers;
 
-        public MoreFairDispatcher(IEnumerable<ThreadedHandler> handlers)
+        public MoreFairDispatcher(IEnumerable<ThreadedHandler<T>> handlers)
         {
             _handlers = handlers.ToList();
         }
 
-        public void Handle(Order order)
+        public void Handle(T order)
         {
             while (true)
             {
@@ -25,9 +25,6 @@ namespace Documents
                 }
                 Thread.Sleep(1);
             }
-
         }
-
-        
     }
 }

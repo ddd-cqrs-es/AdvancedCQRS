@@ -1,7 +1,8 @@
 namespace Documents
 {
-    public interface IHandleOrder
+    public interface IHandle { }
+    public interface IHandle<in T> :IHandle where T : IMessage
     {
-        void Handle(Order order);
+        void Handle(T order);
     }
 }
