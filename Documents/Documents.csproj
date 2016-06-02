@@ -59,12 +59,14 @@
     <Compile Include="Cashier.cs" />
     <Compile Include="Cook.cs" />
     <Compile Include="IHandleOrder.cs" />
+    <Compile Include="IStartable.cs" />
     <Compile Include="Multiplexer.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="OrderTests.cs" />
     <Compile Include="RoundRobinDispatcher.cs" />
+    <Compile Include="ThreadedHandler.cs" />
     <Compile Include="Waiter.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,14 +8,11 @@ namespace Documents
     {
         public static void Main(string[] args)
         {
-            var cashier = new Cashier(new Reporter());
-            var assMan = new AssistantManager(cashier);
+            List<IStartable> startables = new List<IStartable>();
 
-            var cooks = Enumerable.Range(1, 3).Select(i => new Cook(assMan));
+            var waiter = SetUp(startables);
 
-            var multiCook = new RoundRobinDispatcher(cooks);
-
-            var waiter = new Waiter(multiCook);
+            startables.ForEach(x => x.Start());
 
             for (int i = 0; i < 10; i++)
             {
@@ -24,6 +21,24 @@ namespace Documents
 
             Console.ReadLine();
 
+        }
+
+        private static Waiter SetUp(List<IStartable> startables)
+        {
+            var cashier = new Cashier(new Reporter());
+            var assMan = new AssistantManager(cashier);
+
+            var cooks = Enumerable.Range(1, 3).Select(i =>
+            {
+                var cook = new ThreadedHandler(new Cook(assMan));
+                startables.Add(cook);
+                return cook;
+            });
+
+            var multiCook = new RoundRobinDispatcher(cooks);
+
+            var waiter = new Waiter(multiCook);
+            return waiter;
         }
     }
 

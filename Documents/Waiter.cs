@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Documents
 {
-    public class Waiter
+    public class Waiter 
     {
         private readonly IHandleOrder _next;
 
