@@ -53,7 +53,8 @@ namespace Documents
             var bus = new TopicBasedPubSub();
 
             var reporter = new Reporter();
-            bus.SubscribeByType(reporter);
+            bus.SubscribeByType<OrderPaid>(reporter);
+            
 
             var cashier = new ThreadedHandler<OrderPriced>(new Cashier(bus), "Cashier");
             startables.Add(cashier);
