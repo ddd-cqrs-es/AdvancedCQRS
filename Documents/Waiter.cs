@@ -18,7 +18,7 @@ namespace Documents
         {
             var order = new Order();
 
-            items.ToList().Select(LookupItem).ToList().ForEach(x => order.AddLineItem(x));
+            items.ToList().Select(LookupItem).ToList().ForEach(x => order = order.AddLineItem(x));
 
             Console.WriteLine("Placing order");
 

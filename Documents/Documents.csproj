@@ -59,6 +59,7 @@
     <Compile Include="Cashier.cs" />
     <Compile Include="Cook.cs" />
     <Compile Include="IHandleOrder.cs" />
+    <Compile Include="Multiplexer.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
