@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Documents
 {
-    public class Waiter 
+    public class Waiter
     {
         private readonly IHandleOrder _next;
 
@@ -18,7 +16,7 @@ namespace Documents
         {
             var order = new Order();
 
-            items.ToList().Select(LookupItem).ToList().ForEach(x => order = order.AddLineItem(x));
+            items.ToList().Select(LookupItem).ToList().ForEach(x => order.AddLineItem(x));
 
             Console.WriteLine("Placing order");
 

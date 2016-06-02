@@ -4,16 +4,18 @@ using System.Threading.Tasks;
 
 namespace Documents
 {
-    class ThreadedHandler : IHandleOrder, IStartable
+    class ThreadedHandler : IHandleOrder, IStartable, IMonitorQueue
     {
         private readonly IHandleOrder _handler;
+        private readonly string _name;
         readonly ConcurrentQueue<Order> _queue = new ConcurrentQueue<Order>();
-        
+        private Task _task;
 
-        public ThreadedHandler(IHandleOrder handler)
+
+        public ThreadedHandler(IHandleOrder handler, string name)
         {
             _handler = handler;
-            
+            _name = name;
         }
 
         public void Handle(Order order)
@@ -21,9 +23,25 @@ namespace Documents
             _queue.Enqueue(order);
         }
 
+        public int GetCount()
+        {
+            return _queue.Count;
+        }
+
+        public string GetName()
+        {
+            return _name;
+        }
+
+        public Task GetTask()
+        {
+            return _task;
+        }
+
         public void Start()
         {
-            new Task(Process,TaskCreationOptions.LongRunning).Start();
+            _task = new Task(Process, TaskCreationOptions.LongRunning);
+            _task.Start();
         }
 
         private void Process()
