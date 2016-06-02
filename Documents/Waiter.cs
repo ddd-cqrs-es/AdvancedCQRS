@@ -5,11 +5,11 @@ namespace Documents
 {
     public class Waiter
     {
-        private readonly IHandleOrder _next;
+        private readonly IPublisher _bus;
 
-        public Waiter(IHandleOrder next)
+        public Waiter(IPublisher bus)
         {
-            _next = next;
+            _bus = bus;
         }
 
         public string PlaceOrder(params string[] items)
@@ -20,7 +20,7 @@ namespace Documents
 
             Console.WriteLine("Placing order");
 
-            _next.Handle(order);
+            _bus.Publish("cook", order);
 
             return order.Id;
         }

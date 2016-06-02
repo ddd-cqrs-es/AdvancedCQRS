@@ -4,18 +4,17 @@ using System.Linq;
 namespace Documents
 {
     public class AssistantManager : IHandleOrder {
-        private readonly IHandleOrder _next;
+        private readonly IPublisher _bus;
 
-        public AssistantManager(IHandleOrder next)
+        public AssistantManager(IPublisher bus)
         {
-            _next = next;
+            _bus = bus;
         }
 
         public void Handle(Order order)
         {
 
             Console.WriteLine("Pricing...");
-
             
             order.LineItems.ForEach(item => order = order.SetLinePrice(item.Id, 5.10m));
             var subTotal = order.LineItems.Sum(x => x.Price);
@@ -24,7 +23,7 @@ namespace Documents
             order = order.SetTax(tax)
             .SetTotal(tax + subTotal);
 
-            _next.Handle(order);
+            _bus.Publish("pay", order);
         }
     }
 }

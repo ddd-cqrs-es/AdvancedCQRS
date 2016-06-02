@@ -4,20 +4,19 @@ namespace Documents
 {
     public class Cashier : IHandleOrder
     {
-        private readonly IHandleOrder _next;
+        private readonly IPublisher _publisher;
 
-        public Cashier(IHandleOrder next)
+        public Cashier(IPublisher publisher)
         {
-            _next = next;
+            _publisher = publisher;
         }
 
         public void Handle(Order order)
         {
-
             Console.WriteLine("Processing Payment...");
 
             order = order.SetPaid(true);
-            _next.Handle(order);
+            _publisher.Publish("done", order);
         }
     }
 }

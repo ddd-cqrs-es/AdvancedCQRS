@@ -5,13 +5,13 @@ namespace Documents
 {
     public class Cook : IHandleOrder
     {
-        private readonly IHandleOrder _next;
+        private readonly IPublisher _bus;
         private readonly string _name;
         private readonly int _delayMillisecond;
 
-        public Cook(IHandleOrder next, string name, int delayMillisecond)
+        public Cook(IPublisher bus, string name, int delayMillisecond)
         {
-            _next = next;
+            _bus = bus;
             _name = name;
             _delayMillisecond = delayMillisecond;
         }
@@ -23,7 +23,7 @@ namespace Documents
             Console.WriteLine(_name + " is cooking...");
             Thread.Sleep(_delayMillisecond);
 
-            _next.Handle(order);
+            _bus.Publish("price", order);
         }
     }
 }

@@ -50,22 +50,30 @@ namespace Documents
 
         private static Waiter SetUp(List<IStartable> startables)
         {
-            var cashier = new ThreadedHandler(new Cashier(new Reporter()), "Cashier");
+            var bus = new TopicBasedPubSub();
+
+            var reporter = new Reporter();
+            bus.Subscribe("done", reporter);
+
+            var cashier = new ThreadedHandler(new Cashier(bus), "Cashier");
             startables.Add(cashier);
-            var assMan = new ThreadedHandler(new AssistantManager(cashier), "Assistant Manager");
+            bus.Subscribe("pay", cashier);
+            var assMan = new ThreadedHandler(new AssistantManager(bus), "Assistant Manager");
             startables.Add(assMan);
+            bus.Subscribe("price", assMan);
 
             var rnd = new Random(1234);
             var cooks = Enumerable.Range(1, 3).Select(i =>
             {
-                var cook = new ThreadedHandler(new Cook(assMan, $"cook-{i}", rnd.Next(0, 1000)), "Cook "+i);
+                var cook = new ThreadedHandler(new Cook(bus, $"cook-{i}", rnd.Next(0, 1000)), "Cook "+i);
                 startables.Add(cook);
                 return cook;
             });
 
             var multiCook = new MoreFairDispatcher(cooks);
+            bus.Subscribe("cook", multiCook);
 
-            var waiter = new Waiter(multiCook);
+            var waiter = new Waiter(bus);
             return waiter;
         }
     }
