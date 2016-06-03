@@ -2,18 +2,9 @@ using System;
 
 namespace Restaurant.ProcessManagerExample
 {
-    public class ProcessManagerFactory
-    {
-        public Handles<IMessage> Create(Order order, TopicBasedPubSub bus)
-        {
-            if (order.IsDodgy)
-                return new PayFirstProcessManager(bus);
-            else
-                return new PayLastProcessManager(bus);
-        }
-    }
     public class PayFirstProcessManager : BaseProcessManager, Handles<IMessage>
     {
+        private bool isCooked;
         private readonly TopicBasedPubSub _bus;
 
         public PayFirstProcessManager(TopicBasedPubSub bus)
@@ -55,9 +46,51 @@ namespace Restaurant.ProcessManagerExample
                     Order = ((OrderPaid)message).Order,
                 };
                 _bus.Publish(command);
+
+                var sendToMeMessage = new SendToMeIn()
+                {
+                    CorrelationId = message.CorrelationId,
+                    CausationId = message.Id,
+                    Delay = DateTime.UtcNow.AddSeconds(5),
+                    Message = new RetryCooking()
+                    {
+                        CorrelationId = message.CorrelationId,
+                        CausationId = message.Id,
+                        Order = ((OrderPaid)message).Order 
+                    }
+                };
+                _bus.Publish(sendToMeMessage);
+            }
+            if (message is RetryCooking)
+            {
+                if (isCooked)
+                    return;
+                Console.WriteLine("PayFirstProcessManager : Retry");
+                var command = new CookFood()
+                {
+                    CorrelationId = message.CorrelationId,
+                    CausationId = message.Id,
+                    Order = ((RetryCooking)message).Order,
+                };
+                _bus.Publish(command);
+
+                var sendToMeMessage = new SendToMeIn()
+                {
+                    CorrelationId = message.CorrelationId,
+                    CausationId = message.Id,
+                    Delay = DateTime.UtcNow.AddSeconds(5),
+                    Message = new RetryCooking()
+                    {
+                        CorrelationId = message.CorrelationId,
+                        CausationId = message.Id,
+                        Order = ((RetryCooking)message).Order 
+                    }
+                };
+                _bus.Publish(sendToMeMessage);
             }
             if (message is FoodCooked)
             {
+                isCooked = true;
                 OnFinish();
             }
 

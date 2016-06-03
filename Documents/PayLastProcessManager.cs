@@ -14,6 +14,7 @@ namespace Restaurant.ProcessManagerExample
 
     public class PayLastProcessManager : BaseProcessManager, Handles<IMessage>
     {
+        private bool isCooked;
         private readonly TopicBasedPubSub _bus;
 
         public PayLastProcessManager(TopicBasedPubSub bus)

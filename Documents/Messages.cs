@@ -49,5 +49,15 @@ namespace Restaurant.ProcessManagerExample
         public Order Order { get; set; }
     }
 
+    public class SendToMeIn : MessageBase
+    {
+        public DateTime Delay { get; set; }
+        public IMessage Message { get; set; }
+    }
+
+    public class RetryCooking: MessageBase
+    {
+        public Order Order { get; set; }
+    }
 
 }

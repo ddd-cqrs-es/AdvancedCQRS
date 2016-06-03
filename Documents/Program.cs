@@ -88,6 +88,9 @@ namespace Restaurant.ProcessManagerExample
                 return cook;
             });
 
+            var alarm = new AlarmClock(bus);
+            bus.SubscribeByType(alarm);
+            startables.Add(alarm);
             
             var dispatcher = new DroppingHandler<CookFood>( new MoreFairDispatcher<CookFood>(cooks));
             bus.SubscribeByType(dispatcher);
