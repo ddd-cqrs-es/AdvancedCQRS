@@ -7,8 +7,8 @@
     <ProjectGuid>{8DEF383C-1B4B-4D16-8F93-1FACD8B06DB4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Documents</RootNamespace>
-    <AssemblyName>Documents</AssemblyName>
+    <RootNamespace>Restaurant.ProcessManagerExample</RootNamespace>
+    <AssemblyName>Restaurant.ProcessManagerExample</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Documents.Program</StartupObject>
+    <StartupObject>Restaurant.ProcessManagerExample.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

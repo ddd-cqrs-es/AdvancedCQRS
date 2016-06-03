@@ -1,4 +1,4 @@
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     public interface Handles { }
     public interface Handles<in T> :Handles where T : IMessage

@@ -1,6 +1,6 @@
 using System;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     public class ProcessManagerFactory
     {

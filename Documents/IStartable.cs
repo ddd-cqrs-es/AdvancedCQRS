@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     public interface IStartable
     {

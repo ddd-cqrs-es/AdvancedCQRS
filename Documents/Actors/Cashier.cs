@@ -1,6 +1,6 @@
 using System;
 
-namespace Documents.Actors
+namespace Restaurant.ProcessManagerExample.Actors
 {
     public class Cashier : Handles<TakePayment>
     {

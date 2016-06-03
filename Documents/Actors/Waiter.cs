@@ -1,7 +1,6 @@
 using System;
-using System.Linq;
 
-namespace Documents.Actors
+namespace Restaurant.ProcessManagerExample.Actors
 {
     public class Waiter
     {

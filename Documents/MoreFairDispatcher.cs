@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     class MoreFairDispatcher<T> : Handles<T> where T : IMessage
     {

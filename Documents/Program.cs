@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using Documents.Actors;
-using NUnit.Framework.Compatibility;
+using Restaurant.ProcessManagerExample.Actors;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     public class OrderMonitor : Handles<IMessage>
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     class RoundRobinDispatcher<T> : Handles<T> where T : IMessage
     {

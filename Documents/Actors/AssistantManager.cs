@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Documents.Actors
+namespace Restaurant.ProcessManagerExample.Actors
 {
     public class AssistantManager : Handles<PriceOrder> {
         private readonly IPublisher _bus;

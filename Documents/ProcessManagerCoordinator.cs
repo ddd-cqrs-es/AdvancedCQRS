@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     public class ProcessManagerCoordinator : Handles<OrderPlaced>
     {

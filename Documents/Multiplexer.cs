@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     class Multiplexer<T> : Handles<T> where T : IMessage
     {

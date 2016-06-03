@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Documents.Actors
+namespace Restaurant.ProcessManagerExample.Actors
 {
     public class Cook : Handles<CookFood>
     {

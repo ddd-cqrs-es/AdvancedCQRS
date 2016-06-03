@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Documents
+namespace Restaurant.ProcessManagerExample
 {
     class ThreadedHandler<T> : Handles<T>, IStartable, IMonitorQueue where T: IMessage
     {
