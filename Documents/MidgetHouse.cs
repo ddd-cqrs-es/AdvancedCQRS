@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Documents
 {
-    public class MidgetHouse : Handles<OrderPlaced>
+    public class MidgetHouse<T> : Handles<T> where T : IMessage 
     {
         private readonly TopicBasedPubSub _bus;
         private Dictionary<Guid, Midget> _midgets = new Dictionary<Guid, Midget>(); 
@@ -13,14 +13,14 @@ namespace Documents
             _bus = bus;
         }
 
-        public void Handle(OrderPlaced message)
-        {
+        public void Handle(T message)  {
             var midget = new Midget(_bus);
 
             _bus.SubscribeByCorrelationId<IMessage>(midget, message.CorrelationId.ToString());
             _midgets.Add(message.CorrelationId, midget);
             
         }
+
 
     }
 }

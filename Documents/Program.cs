@@ -31,8 +31,8 @@ namespace Documents
 
             var waiter = SetUp(startables, bus);
 
-            //var midgetHouse = new ThreadedHandler<OrderPlaced>(new MidgetHouse(bus), "MidgetHouse");
-            var midgetHouse = new MidgetHouse(bus);
+
+            var midgetHouse = new MidgetHouse<OrderPlaced>(bus);
 
             StartMonitoring(startables);
             bus.SubscribeByType(midgetHouse);
