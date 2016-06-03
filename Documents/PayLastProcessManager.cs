@@ -2,11 +2,21 @@ using System;
 
 namespace Documents
 {
-    public class Midget : Handles<IMessage>
+    public abstract class BaseProcessManager
+    {
+        public event EventHandler Finish;
+
+        protected virtual void OnFinish()
+        {
+            Finish?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public class PayLastProcessManager : BaseProcessManager, Handles<IMessage>
     {
         private readonly TopicBasedPubSub _bus;
 
-        public Midget(TopicBasedPubSub bus)
+        public PayLastProcessManager(TopicBasedPubSub bus)
         {
             _bus = bus;
         }
@@ -15,7 +25,7 @@ namespace Documents
         {
             if (message is OrderPlaced)
             {
-                Console.WriteLine("Midget : OrderPlaced");
+                Console.WriteLine("PayLastProcessManager : OrderPlaced");
                 var command = new CookFood()
                 {
                     CorrelationId = message.CorrelationId,
@@ -26,7 +36,7 @@ namespace Documents
             }
             if (message is FoodCooked)
             {
-                Console.WriteLine("Midget : FoodCooked");
+                Console.WriteLine("PayLastProcessManager : FoodCooked");
                 var command = new PriceOrder()
                 {
                     CorrelationId = message.CorrelationId,
@@ -37,7 +47,7 @@ namespace Documents
             }
             if (message is OrderPriced)
             {
-                Console.WriteLine("Midget : OrderPriced");
+                Console.WriteLine("PayLastProcessManager : OrderPriced");
                 var command = new TakePayment()
                 {
                     CorrelationId = message.CorrelationId,
@@ -45,6 +55,10 @@ namespace Documents
                     Order = ((OrderPriced) message).Order,
                 };
                 _bus.Publish(command);
+            }
+            if (message is OrderPaid)
+            {
+                this.OnFinish();
             }
 
         }

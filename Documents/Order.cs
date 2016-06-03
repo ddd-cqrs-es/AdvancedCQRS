@@ -52,9 +52,18 @@ namespace Documents
             get { return ValueOrDefault<string>("ingredients"); } 
         }
 
+        public bool IsDodgy
+        {
+            get { return ValueOrDefault<bool>("isDodgy"); }
+        }
+
         public Order SetIngredients(string value)
         {
             return SetOrAddProperty("ingredients", value);
+        }
+        public Order SetDodgyCustomer(bool isDodgy)
+        {
+            return SetOrAddProperty("isDodgy", isDodgy);
         }
 
         public List<LineItem> LineItems

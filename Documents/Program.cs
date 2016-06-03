@@ -31,17 +31,16 @@ namespace Documents
 
             var waiter = SetUp(startables, bus);
 
-            //var midgetHouse = new ThreadedHandler<OrderPlaced>(new MidgetHouse(bus), "MidgetHouse");
-            var midgetHouse = new MidgetHouse(bus);
+            var coordinator = new ProcessManagerCoordinator(bus);
 
             StartMonitoring(startables);
-            bus.SubscribeByType(midgetHouse);
+            bus.SubscribeByType(coordinator);
 
             startables.ForEach(x => x.Start());
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10; i++)
             {
-                var orderId = waiter.PlaceOrder("poo");
+                var orderId = waiter.PlaceOrder("poo", i % 2 == 0);
                 bus.SubscribeByCorrelationId(monitor, orderId);
 
             }

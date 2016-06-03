@@ -12,11 +12,11 @@ namespace Documents.Actors
             _bus = bus;
         }
 
-        public string PlaceOrder(params string[] items)
+        public string PlaceOrder(string items, bool isDodgy)
         {
             var order = new Order();
-
-            items.ToList().Select(LookupItem).ToList().ForEach(x => order = order.AddLineItem(x));
+            order = order.SetDodgyCustomer(isDodgy);
+            order = order.AddLineItem(LookupItem(items));
 
             Console.WriteLine("Placing order");
 
