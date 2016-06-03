@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Documents
+namespace Documents.Actors
 {
     public class AssistantManager : Handles<FoodCooked> {
         private readonly IPublisher _bus;

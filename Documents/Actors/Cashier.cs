@@ -1,6 +1,6 @@
 using System;
 
-namespace Documents
+namespace Documents.Actors
 {
     public class Cashier : Handles<OrderPriced>
     {
