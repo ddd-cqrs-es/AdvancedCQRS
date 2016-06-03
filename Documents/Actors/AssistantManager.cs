@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Documents.Actors
 {
-    public class AssistantManager : Handles<FoodCooked> {
+    public class AssistantManager : Handles<PriceOrder> {
         private readonly IPublisher _bus;
 
         public AssistantManager(IPublisher bus)
@@ -11,7 +11,7 @@ namespace Documents.Actors
             _bus = bus;
         }
 
-        public void Handle(FoodCooked message)
+        public void Handle(PriceOrder message)
         {
             var order = message.Order;
             Console.WriteLine("Pricing...");
@@ -23,7 +23,12 @@ namespace Documents.Actors
             order = order.SetTax(tax)
             .SetTotal(tax + subTotal);
 
-            _bus.Publish(new OrderPriced {Order = order});
+
+            var @event = new OrderPriced { Order = order };
+            @event.CorrelationId = message.CorrelationId;
+            @event.CausationId = message.Id;
+
+            _bus.Publish(@event);
         }
     }
 }

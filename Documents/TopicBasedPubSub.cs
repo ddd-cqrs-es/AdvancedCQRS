@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Documents
@@ -8,13 +9,20 @@ namespace Documents
         void Publish<T>(T message) where T : IMessage;
 
     }
-    class TopicBasedPubSub : IPublisher
+    public class TopicBasedPubSub : IPublisher
     {
         private readonly Dictionary<string, List<Handles>> _subscriptions = new Dictionary<string, List<Handles>>();
 
         public void Publish<T>(T message) where T : IMessage
         {
             var topic = typeof(T).Name.ToLower();
+
+            Publish(topic, message);
+            Publish(message.CorrelationId.ToString(), message);
+        }
+
+        public void Publish<T>(string topic, T message) where T : IMessage
+        {
             if (!_subscriptions.ContainsKey(topic))
             {
                 return;
@@ -24,12 +32,19 @@ namespace Documents
                 var subscriber = s as Handles<T>;
                 subscriber?.Handle(message);
             });
+
         }
+
 
         public void SubscribeByType<T>(Handles<T> subscriber) where T : IMessage
         {
             var topic = typeof(T).Name.ToLower();
             Subscribe(topic, subscriber);
+        }
+
+        public void SubscribeByCorrelationId<T>(Handles<T> subscriber, string correlationId) where T : IMessage
+        {
+            Subscribe(correlationId, subscriber);
         }
         private void Subscribe<T>(string topic, Handles<T> subscriber) where T : IMessage
         {

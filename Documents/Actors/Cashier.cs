@@ -2,7 +2,7 @@ using System;
 
 namespace Documents.Actors
 {
-    public class Cashier : Handles<OrderPriced>
+    public class Cashier : Handles<TakePayment>
     {
         private readonly IPublisher _publisher;
 
@@ -11,14 +11,18 @@ namespace Documents.Actors
             _publisher = publisher;
         }
 
-        public void Handle(OrderPriced message)
+        public void Handle(TakePayment message)
         {
             var order = message.Order;
             Console.WriteLine("Processing Payment...");
 
             order = order.SetPaid(true);
 
-            _publisher.Publish(new OrderPaid {Order = order});
+            var @event = new OrderPaid { Order = order };
+            @event.CorrelationId = message.CorrelationId;
+            @event.CausationId = message.Id;
+
+            _publisher.Publish(@event);
         }
     }
 }

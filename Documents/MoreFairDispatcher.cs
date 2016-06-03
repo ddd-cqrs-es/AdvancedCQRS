@@ -13,14 +13,14 @@ namespace Documents
             _handlers = handlers.ToList();
         }
 
-        public void Handle(T order)
+        public void Handle(T message)
         {
             while (true)
             {
                 var chosenHandler = _handlers.FirstOrDefault(h => h.GetCount() < 5);
                 if (chosenHandler != null)
                 {
-                    chosenHandler.Handle(order);
+                    chosenHandler.Handle(message);
                     break;
                 }
                 Thread.Sleep(1);
