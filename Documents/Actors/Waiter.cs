@@ -20,7 +20,12 @@ namespace Documents.Actors
 
             Console.WriteLine("Placing order");
 
-            _bus.Publish(new OrderPlaced { Order = order});
+            var message = new OrderPlaced {Order = order};
+            message.CorrelationId= Guid.Parse(order.Id);
+            message.CausationId=Guid.Empty;
+
+            _bus.Publish(message);
+
 
             return order.Id;
         }

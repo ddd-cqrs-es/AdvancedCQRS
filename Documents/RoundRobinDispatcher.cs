@@ -11,10 +11,10 @@ namespace Documents
             _handlers = new Queue<Handles<T>>(handlers);
         }
 
-        public void Handle(T order)
+        public void Handle(T message)
         {
             var handler = _handlers.Peek();
-            handler.Handle(order);
+            handler.Handle(message);
             _handlers.Enqueue(_handlers.Dequeue());
         }
 

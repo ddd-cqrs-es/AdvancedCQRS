@@ -14,9 +14,9 @@ namespace Documents
             _handlers = handlers.ToList();
         }
 
-        public void Handle(T order)
+        public void Handle(T message)
         {
-            _handlers.ForEach(x => x.Handle(order));
+            _handlers.ForEach(x => x.Handle(message));
         }
     }
 }

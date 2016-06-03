@@ -18,9 +18,9 @@ namespace Documents
             _name = name;
         }
 
-        public void Handle(T order)
+        public void Handle(T message)
         {
-            _queue.Enqueue(order);
+            _queue.Enqueue(message);
         }
 
         public int GetCount()

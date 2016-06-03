@@ -62,6 +62,8 @@
     <Compile Include="Handles.cs" />
     <Compile Include="IStartable.cs" />
     <Compile Include="Messages.cs" />
+    <Compile Include="Midget.cs" />
+    <Compile Include="MidgetHouse.cs" />
     <Compile Include="MoreFairDispatcher.cs" />
     <Compile Include="Multiplexer.cs" />
     <Compile Include="Order.cs" />

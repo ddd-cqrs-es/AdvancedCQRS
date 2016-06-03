@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace Documents.Actors
 {
-    public class Cook : Handles<OrderPlaced>
+    public class Cook : Handles<CookFood>
     {
         private readonly IPublisher _bus;
         private readonly string _name;
@@ -16,14 +16,19 @@ namespace Documents.Actors
             _delayMillisecond = delayMillisecond;
         }
 
-        public void Handle(OrderPlaced message)
+        public void Handle(CookFood message)
         {
             var order = message.Order.SetIngredients("bread,meat");
 
             Console.WriteLine(_name + " is cooking...");
             Thread.Sleep(_delayMillisecond);
 
-            _bus.Publish(new FoodCooked {Order = order});
+
+            var @event = new FoodCooked {Order = order};
+            @event.CorrelationId = message.CorrelationId;
+            @event.CausationId = message.Id;
+
+            _bus.Publish(@event);
         }
     }
 }
