@@ -88,7 +88,8 @@ namespace Restaurant.ProcessManagerExample
                 return cook;
             });
 
-            var dispatcher = new MoreFairDispatcher<CookFood>(cooks);
+            
+            var dispatcher = new DroppingHandler<CookFood>( new MoreFairDispatcher<CookFood>(cooks));
             bus.SubscribeByType(dispatcher);
             var waiter = new Waiter(bus);
             return waiter;
