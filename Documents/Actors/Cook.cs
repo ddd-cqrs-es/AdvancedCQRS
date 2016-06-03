@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 
-namespace Documents
+namespace Documents.Actors
 {
     public class Cook : Handles<OrderPlaced>
     {
